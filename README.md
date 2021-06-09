@@ -13,5 +13,6 @@ It is a small translucent rectangular window that will be occupying a tiny porti
 6.) Giving the input ">exit" will close the application itself.</br>
 7.) Giving the input "<" will tranfom Develop into its initial state.</br>
 Note: Database functionality is also provided where all the inputs will be saved into the database.</br>
+</br>
 -> Setting </br>
 Setting class can be used to change the look and feel of Develop.</br>
