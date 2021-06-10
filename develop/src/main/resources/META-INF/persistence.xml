@@ -8,10 +8,10 @@
 
             <!-- ADD DATABASE DETAILS HERE -->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test" />
-            <property name="javax.persistence.jdbc.user" value="root" />
-            <property name="javax.persistence.jdbc.password" value="9891774435" />
-            <property name="hibernate.hbm2ddl.auto" value="create" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:/" />
+            <property name="javax.persistence.jdbc.user" value="" />
+            <property name="javax.persistence.jdbc.password" value="" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
             <property name="hibernate.show_sql" value="true" />
             
         </properties>
