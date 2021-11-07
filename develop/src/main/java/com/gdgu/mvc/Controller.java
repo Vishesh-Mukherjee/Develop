@@ -7,8 +7,8 @@ public class Controller {
     private String developRequest;
     private String exDevelopRequest = "";
 
-    private final String FORWARD_KEY = Setting.FORWARD_KEY; 
-    private final String BACKWARD_KEY = Setting.BACKWARD_KEY;
+    private final String FORWARD_KEY = Settings.FORWARD_KEY; 
+    private final String BACKWARD_KEY = Settings.BACKWARD_KEY;
 
     public Controller() {
     }
@@ -44,8 +44,7 @@ public class Controller {
                 case FORWARD_KEY + "notebook": beginNotebook(); break;
                 case FORWARD_KEY + "clock": 
                     view.attachClock(); 
-                    view.clearDisplay(); 
-                    view.setClockState(true); break;
+                    view.clearDisplay(); break;
                 case BACKWARD_KEY + "clock": 
                     view.detachClock(); 
                     view.clearDisplay(); break;
@@ -54,6 +53,18 @@ public class Controller {
                     view.setSystemInfo(model.getSystemInfo()); 
                     view.setSystemInfoState(true); break;
                 case BACKWARD_KEY + "system": view.detachSystemInfo(); break;
+                case FORWARD_KEY + "tictactoe":
+                    view.attachTictactoe();
+                    view.clearDisplay(); break;
+                case BACKWARD_KEY + "tictactoe":
+                    view.detachTictactoe();
+                    view.clearDisplay(); break;
+                case FORWARD_KEY + "stopwatch":
+                    view.attachStopwatch();
+                    view.clearDisplay(); break;
+                case BACKWARD_KEY + "stopwatch":
+                    view.detachstopwatch();
+                    view.clearDisplay(); break;
             }
         }
         else {

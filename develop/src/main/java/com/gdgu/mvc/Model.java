@@ -14,7 +14,7 @@ public class Model {
 
     private List<String> notes = new ArrayList<>();
 
-    private static final String BACKWARD_KEYKEY = Setting.BACKWARD_KEY;
+    private static final String BACKWARD_KEYKEY = Settings.BACKWARD_KEY;
     private final Database database = new Database();
 
     public Model() {
@@ -62,6 +62,9 @@ public class Model {
         if (note.equals(BACKWARD_KEYKEY)) {
             controller.ceaseNotebook();
             return null;
+        } else if(note.equals("clear__notebook")) {
+            notes.clear();
+            return notes;
         } else {
             notes.add(note);
             return notes;

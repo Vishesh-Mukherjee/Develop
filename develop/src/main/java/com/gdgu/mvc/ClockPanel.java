@@ -21,12 +21,12 @@ public class ClockPanel extends JPanel{
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(230, 25));
         this.setBorder(new EmptyBorder(3, 3, 3, 3));
-        this.setBackground(Setting.BACKGROUND);
+        this.setBackground(Settings.BACKGROUND);
 
-        clockLabel.setBackground(Setting.BACKGROUND);
-        clockLabel.setForeground(Setting.FOREGROUND);
-        clockLabel.setBorder(new LineBorder(Setting.BORDER_COLOR)); 
-        clockLabel.setFont(new Font(Setting.FONTSTYLE, Font.BOLD, 12));
+        clockLabel.setBackground(Settings.BACKGROUND);
+        clockLabel.setForeground(Settings.FOREGROUND);
+        clockLabel.setBorder(new LineBorder(Settings.BORDER_COLOR)); 
+        clockLabel.setFont(new Font(Settings.FONTSTYLE, Font.BOLD, 12));
         clockLabel.setHorizontalAlignment(JLabel.CENTER);
 
         SimpleDateFormat clock = new SimpleDateFormat("EEE  ||  MMM d  ||  hh:mm");

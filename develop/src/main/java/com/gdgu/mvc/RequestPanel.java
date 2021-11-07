@@ -15,11 +15,11 @@ public class RequestPanel extends JPanel{
         this.setBorder(new EmptyBorder(3, 3, 3, 3));
         this.setBackground(Color.BLACK);
 
-        requestField.setBackground(Setting.BACKGROUND);
-        requestField.setForeground(Setting.FOREGROUND);
-        requestField.setCaretColor(Setting.CARET_COLOR); 
-        requestField.setBorder(new LineBorder(Setting.BORDER_COLOR)); 
-        requestField.setFont(new Font(Setting.FONTSTYLE, Font.BOLD, 14));
+        requestField.setBackground(Settings.BACKGROUND);
+        requestField.setForeground(Settings.FOREGROUND);
+        requestField.setCaretColor(Settings.CARET_COLOR); 
+        requestField.setBorder(new LineBorder(Settings.BORDER_COLOR)); 
+        requestField.setFont(new Font(Settings.FONTSTYLE, Font.BOLD, 14));
 
         this.add(requestField, BorderLayout.CENTER);
     }

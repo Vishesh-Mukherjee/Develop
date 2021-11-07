@@ -2,7 +2,7 @@ package com.gdgu.mvc;
 
 import java.awt.*;
 
-public class Setting {
+public class Settings {
     public static final String FONTSTYLE = "Consolas";
     public static final Color FOREGROUND = new Color(0, 255, 0);
     public static final Color CARET_COLOR =   new Color(0, 255, 0);

@@ -18,14 +18,14 @@ public class SystemInfoPanel extends JPanel{
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(230, 170));
         this.setBorder(new EmptyBorder(3, 3, 3, 3));
-        this.setBackground(Setting.BACKGROUND);
+        this.setBackground(Settings.BACKGROUND);
 
-        systemInfoArea.setForeground(Setting.FOREGROUND);
-        systemInfoArea.setFont(new Font(Setting.FONTSTYLE, Font.BOLD, 13));
+        systemInfoArea.setForeground(Settings.FOREGROUND);
+        systemInfoArea.setFont(new Font(Settings.FONTSTYLE, Font.BOLD, 13));
         systemInfoArea.setLineWrap(true);
         systemInfoArea.setEditable(false);
-        systemInfoArea.setBorder(new LineBorder(Setting.BORDER_COLOR));
-        systemInfoArea.setBackground(Setting.BACKGROUND);
+        systemInfoArea.setBorder(new LineBorder(Settings.BORDER_COLOR));
+        systemInfoArea.setBackground(Settings.BACKGROUND);
 
         this.add(systemInfoArea, BorderLayout.CENTER);
     }

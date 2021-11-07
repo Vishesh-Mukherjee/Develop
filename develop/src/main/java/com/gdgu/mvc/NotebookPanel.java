@@ -18,17 +18,17 @@ public class NotebookPanel extends JPanel{
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(230, 120));
         this.setBorder(new EmptyBorder(3, 3, 3, 3));
-        this.setBackground(Setting.BACKGROUND);
+        this.setBackground(Settings.BACKGROUND);
 
-        noteArea.setForeground(Setting.FOREGROUND);
-        noteArea.setFont(new Font(Setting.FONTSTYLE, Font.BOLD, 13));
+        noteArea.setForeground(Settings.FOREGROUND);
+        noteArea.setFont(new Font(Settings.FONTSTYLE, Font.BOLD, 13));
         noteArea.setLineWrap(true);
         noteArea.setEditable(false);
-        noteArea.setBorder(new LineBorder(Setting.BORDER_COLOR));
-        noteArea.setBackground(Setting.BACKGROUND);
+        noteArea.setBorder(new LineBorder(Settings.BORDER_COLOR));
+        noteArea.setBackground(Settings.BACKGROUND);
         
         JScrollPane notePane = new JScrollPane(noteArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        notePane.setBorder(new LineBorder(Setting.BORDER_COLOR, 1, true));
+        notePane.setBorder(new LineBorder(Settings.BORDER_COLOR, 1, true));
 
         this.add(notePane, BorderLayout.CENTER);
     }

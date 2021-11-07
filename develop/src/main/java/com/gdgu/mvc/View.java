@@ -17,6 +17,8 @@ public class View {
     private NotebookPanel notebookPanel = new NotebookPanel();
     private ClockPanel clockPanel = new ClockPanel();
     private SystemInfoPanel systemInfoPanel = new SystemInfoPanel();
+    private TicTacToePanel toePanel = new TicTacToePanel();
+    private StopwatchPanel watchPanel = new StopwatchPanel();
 
     private int x, y, xMouse, yMouse;
     private static int heightCount;
@@ -29,6 +31,7 @@ public class View {
         developFrame.getContentPane().setBackground(Color.BLACK);
         developFrame.setVisible(true);
         developFrame.setSize(getDevelopDimension(requestPanel, true));
+        developFrame.setLocationRelativeTo(null);
         developFrame.add(requestPanel);
         developFrame.addMouseListener(new MouseAdapter() {
             @Override
@@ -81,13 +84,12 @@ public class View {
         }
     } 
 
-    public void setClockState(boolean bool) {
-        clockPanel.setAir(bool);
-    }
-
     public void attachClock() {
-        developFrame.setSize(getDevelopDimension(clockPanel, true));
-        developFrame.add(clockPanel);
+        if (!clockPanel.getAir()) {
+            developFrame.setSize(getDevelopDimension(clockPanel, true));
+            developFrame.add(clockPanel);
+            clockPanel.setAir(true);
+        }
     }
 
     public void detachClock() {
@@ -120,16 +122,19 @@ public class View {
     }
 
     public void attachSystemInfo() {
-        developFrame.setSize(getDevelopDimension(systemInfoPanel, true));
-        developFrame.add(systemInfoPanel);
+        if (!systemInfoPanel.getAir()) {
+            developFrame.setSize(getDevelopDimension(systemInfoPanel, true));
+            developFrame.add(systemInfoPanel);
+            systemInfoPanel.setAir(true);
+        }
     }
 
     public void detachSystemInfo() {
         if (systemInfoPanel.getAir()) {
-        requestPanel.getRequestField().setText("");
-        developFrame.remove(systemInfoPanel);
-        developFrame.setSize(getDevelopDimension(systemInfoPanel, false));
-        systemInfoPanel.setAir(false);
+            requestPanel.getRequestField().setText("");
+            developFrame.remove(systemInfoPanel);
+            developFrame.setSize(getDevelopDimension(systemInfoPanel, false));
+            systemInfoPanel.setAir(false);
         }
     }
 
@@ -138,10 +143,44 @@ public class View {
         systemInfoPanel.setSystemInfo(systemInfo);
     }
 
+    public void attachTictactoe() {
+        if (!toePanel.getAir()) {
+            developFrame.setSize(getDevelopDimension(toePanel, true));
+            developFrame.add(toePanel);
+            toePanel.setAir(true);
+        }
+    }
+
+    public void detachTictactoe() {
+        if (toePanel.getAir()) {
+            requestPanel.getRequestField().setText("");
+            developFrame.remove(toePanel);
+            developFrame.setSize(getDevelopDimension(toePanel, false));
+            toePanel.setAir(false);
+        }
+    }
+
+    public void attachStopwatch() {
+        if (!watchPanel.getAir()) {
+            developFrame.setSize(getDevelopDimension(watchPanel, true));
+            developFrame.add(watchPanel);
+            watchPanel.setAir(true);
+        }
+    }
+
+    public void detachstopwatch() {
+        if (watchPanel.getAir()) {
+            requestPanel.getRequestField().setText("");
+            developFrame.remove(watchPanel);
+            developFrame.setSize(getDevelopDimension(watchPanel, false));
+            watchPanel.setAir(false);
+        }
+    }
+
     public void inExecution(boolean bool) {
         requestPanel.getRequestField().setText("");
         if (bool) {
-            ((JComponent)developFrame.getContentPane()).setBorder(new LineBorder(Setting.BORDER_COLOR));
+            ((JComponent)developFrame.getContentPane()).setBorder(new LineBorder(Settings.BORDER_COLOR));
         } else {
             ((JComponent)developFrame.getContentPane()).setBorder(BorderFactory.createEmptyBorder());
         }
