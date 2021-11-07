@@ -65,6 +65,12 @@ public class Controller {
                 case BACKWARD_KEY + "stopwatch":
                     view.detachstopwatch();
                     view.clearDisplay(); break;
+                case FORWARD_KEY + "battery":
+                    view.attachBattery();
+                    view.clearDisplay(); break;
+                case BACKWARD_KEY + "battery":
+                    view.detachBattery();
+                    view.clearDisplay(); break;
             }
         }
         else {

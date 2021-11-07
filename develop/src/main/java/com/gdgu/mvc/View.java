@@ -19,6 +19,7 @@ public class View {
     private SystemInfoPanel systemInfoPanel = new SystemInfoPanel();
     private TicTacToePanel toePanel = new TicTacToePanel();
     private StopwatchPanel watchPanel = new StopwatchPanel();
+    private BatteryPanel batteryPanel = new BatteryPanel();
 
     private int x, y, xMouse, yMouse;
     private static int heightCount;
@@ -174,6 +175,23 @@ public class View {
             developFrame.remove(watchPanel);
             developFrame.setSize(getDevelopDimension(watchPanel, false));
             watchPanel.setAir(false);
+        }
+    }
+
+    public void attachBattery() {
+        if (!batteryPanel.getAir()) {
+            developFrame.setSize(getDevelopDimension(batteryPanel, true));
+            developFrame.add(batteryPanel);
+            batteryPanel.setAir(true);
+        }
+    }
+
+    public void detachBattery() {
+        if (batteryPanel.getAir()) {
+            requestPanel.getRequestField().setText("");
+            developFrame.remove(batteryPanel);
+            developFrame.setSize(getDevelopDimension(batteryPanel, false));
+            batteryPanel.setAir(false);
         }
     }
 

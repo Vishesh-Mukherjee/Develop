@@ -31,13 +31,19 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.16</version>
+      <version>8.0.27</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
       <version>5.4.30.Final</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.sun.jna/jna -->
+    <dependency>
+      <groupId>com.sun.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>3.0.9</version>
     </dependency>
 
   </dependencies>
