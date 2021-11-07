@@ -10,8 +10,10 @@ It is a small translucent rectangular window that will be occupying a tiny porti
 3.) Giving the input ">notebook" will create a window with a notebook.</br>
 4.) Giving the input ">clock" will create a window with a clock.</br>
 5.) Giving the input ">system" will create a window with your system specifications.</br>
-6.) Giving the input ">exit" will close the application itself.</br>
-7.) Giving the input "<" will tranfom Develop into its initial state.</br>
+6.) Giving the input ">tictactoe" will create a window with tictactoe game.</br>
+7.) Giving the input ">stopwatch" will create a window with stopwatch.</br>
+8.) Giving the input ">exit" will close the application itself.</br>
+9.) Giving the input "<" will tranfom Develop into its initial state.</br>
 Note: Database functionality is also provided where all the inputs will be saved into the database.</br>
 </br>
 -> Setting </br>
