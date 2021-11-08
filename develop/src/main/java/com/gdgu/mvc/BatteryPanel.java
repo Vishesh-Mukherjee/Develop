@@ -39,7 +39,7 @@ public class BatteryPanel extends JPanel {
     }
 
     private String calculate() {
-        String result = "  Batter Status: ";
+        String result = " Battery Status: ";
         Kernel32 lib = (Kernel32) Native.loadLibrary("Kernel32", Kernel32.class);
         Kernel32.SYSTEM_POWER_STATUS batteryStatus = new Kernel32.SYSTEM_POWER_STATUS();
         lib.GetSystemPowerStatus(batteryStatus);
