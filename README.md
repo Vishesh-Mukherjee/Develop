@@ -1,5 +1,5 @@
 # Develop
-Devlop is a maven based desktop assistive GUI application that is designed using MVC pattern and created using Swing and Hibernate Framework. It is platform-independent application that can exhibits discrete functionalities based on distinct inputs. </br>
+Devlop is a maven based desktop application that is designed using MVC pattern and created using Swing and Hibernate Framework. It is platform-independent application that can exhibits different functionalities based on different inputs. </br>
 </br>
 -> Appearence </br>
 It is a small translucent rectangular window that will be occupying a tiny portion of your screen. It will be always on top. So, it does not matter which application you are running Develop will always be there to assist you without interfering with your work.</br>
