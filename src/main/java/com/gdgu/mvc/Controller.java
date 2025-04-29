@@ -1,7 +1,18 @@
 package com.gdgu.mvc;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import net.sourceforge.jeval.Evaluator;
+
 public class Controller {
-    private Model model;
+
+    private List<String> notes = new ArrayList<>();
+
+    private static final String BACKWARD_KEYKEY = Settings.BACKWARD_KEY;
+    private final Database database = new Database();
+
     private View view;
 
     private String developRequest;
@@ -9,17 +20,6 @@ public class Controller {
 
     private final String FORWARD_KEY = Settings.FORWARD_KEY; 
     private final String BACKWARD_KEY = Settings.BACKWARD_KEY;
-
-    public Controller() {
-    }
-
-    public Model getModel() {
-        return this.model;
-    }
-
-    public void setModel(Model model) {
-        this.model = model;
-    }
 
     public View getView() {
         return this.view;
@@ -31,14 +31,14 @@ public class Controller {
 
     public void updateControllerView(String developRequest) {
         this.developRequest = developRequest;
-        model.database(developRequest);
+        database(developRequest);
         requestController();
     }
 
     public void requestController() {
         if (exDevelopRequest.equals("")) {
             switch(developRequest) {
-                case FORWARD_KEY + "exit": model.terminateApplication(); break;
+                case FORWARD_KEY + "exit": terminateApplication(); break;
                 case FORWARD_KEY + "eval": beginEvalateExpression(); break;
                 case FORWARD_KEY + "random": beginGenerateRandom(); break;
                 case FORWARD_KEY + "notebook": beginNotebook(); break;
@@ -50,7 +50,7 @@ public class Controller {
                     view.clearDisplay(); break;
                 case FORWARD_KEY + "system": 
                     view.attachSystemInfo(); 
-                    view.setSystemInfo(model.getSystemInfo()); 
+                    view.setSystemInfo(getSystemInfo()); 
                     view.setSystemInfoState(true); break;
                 case BACKWARD_KEY + "system": view.detachSystemInfo(); break;
                 case FORWARD_KEY + "tictactoe":
@@ -75,9 +75,9 @@ public class Controller {
         }
         else {
             switch(exDevelopRequest) {
-                case FORWARD_KEY + "eval": view.setResult(model.evaluateExpression(developRequest)); break;
-                case FORWARD_KEY + "random": view.setResult(model.generateRandom(developRequest)); break;
-                case FORWARD_KEY + "notebook": view.setNotes(model.getNotes(developRequest)); break;
+                case FORWARD_KEY + "eval": view.setResult(evaluateExpression(developRequest)); break;
+                case FORWARD_KEY + "random": view.setResult(generateRandom(developRequest)); break;
+                case FORWARD_KEY + "notebook": view.setNotes(getNotes(developRequest)); break;
             }
         }
     } 
@@ -108,5 +108,64 @@ public class Controller {
     public void ceaseNotebook() {
         this.ceaseEvaluteExpression();
         view.detachNoteBook();
+    }
+
+    // Model methods
+
+    public void terminateApplication() {
+        System.exit(0);
+    }
+
+    public String evaluateExpression(String expression) {
+        if (expression.equals(BACKWARD_KEYKEY)) {
+            ceaseEvaluteExpression();
+            return null;
+        }
+        else {
+            Evaluator evaluator = new Evaluator();
+            try {
+                return evaluator.evaluate(expression);
+            } catch (Exception e) {
+                return "Invalid Expression"; 
+            }
+        }
+    }
+
+    public String generateRandom(String str) {
+        if (str.equals(BACKWARD_KEYKEY)) {
+            ceaseGenerateRandom();
+            return null;
+        } else {
+            Random random = new Random();
+            String[] myArray = str.split(" ");
+            return myArray[random.nextInt(myArray.length)];
+        }
+    }
+
+    public List<String> getNotes(String note) {
+        if (note.equals(BACKWARD_KEYKEY)) {
+            ceaseNotebook();
+            return null;
+        } else if(note.equals("clear__notebook")) {
+            notes.clear();
+            return notes;
+        } else {
+            notes.add(note);
+            return notes;
+        }
+    }
+
+    public List<String> getSystemInfo() {
+        return List.of(
+            "foo",
+            "bar",
+            "baz",
+            "qux",
+            "quux"
+        );
+    }
+
+    public void database(String request) {
+        database.addData(request);
     }
 }

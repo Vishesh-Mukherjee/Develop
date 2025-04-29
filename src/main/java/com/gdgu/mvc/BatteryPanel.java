@@ -7,8 +7,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-import com.sun.jna.*;
-
 public class BatteryPanel extends JPanel {
     private boolean air;
     private JLabel batteryLabel;
@@ -40,13 +38,10 @@ public class BatteryPanel extends JPanel {
 
     private String calculate() {
         String result = " Battery Status: ";
-        Kernel32 lib = (Kernel32) Native.loadLibrary("Kernel32", Kernel32.class);
-        Kernel32.SYSTEM_POWER_STATUS batteryStatus = new Kernel32.SYSTEM_POWER_STATUS();
-        lib.GetSystemPowerStatus(batteryStatus);
 
-        result += (batteryStatus.BatteryLifePercent == (byte) 255) ? "Unknown " : batteryStatus.BatteryLifePercent + "% ";
+        int batteryStatus = 0;
 
-        switch (batteryStatus.ACLineStatus) {
+        switch (batteryStatus) {
             case (0):
                 if (count == 0) {
                     result += "Depleting";

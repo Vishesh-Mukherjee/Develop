@@ -24,7 +24,8 @@ public class View {
     private int x, y, xMouse, yMouse;
     private static int heightCount;
 
-    public View() {
+    public View(Controller controller) {
+        this.controller = controller;
         developFrame.setLayout(new BoxLayout(developFrame.getContentPane(), BoxLayout.Y_AXIS));
         developFrame.setUndecorated(true);
         developFrame.setOpacity(0.85f);
@@ -60,10 +61,6 @@ public class View {
 
     public Controller getController() {
         return this.controller;
-    }
-
-    public void setController(Controller controller) {
-        this.controller = controller;
     }
 
     private void notifyController() {
