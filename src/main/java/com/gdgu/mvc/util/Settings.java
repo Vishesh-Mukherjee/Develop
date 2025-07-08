@@ -1,4 +1,4 @@
-package com.gdgu.mvc;
+package com.gdgu.mvc.util;
 
 import java.awt.*;
 
@@ -10,4 +10,8 @@ public class Settings {
     public static final Color BACKGROUND = new Color(0, 0, 0);
     public static final String FORWARD_KEY = ">";
     public static final String BACKWARD_KEY = "<";
+
+    public static final Color ATTENDED = new Color(0, 255, 0);
+    public static final Color NOT_ATTENDED = new Color(255, 0, 0);
+    public static final Color UNKNOWN = new Color(255, 255, 255);
 }

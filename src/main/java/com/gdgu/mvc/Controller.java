@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.gdgu.mvc.panel.PanelFactory;
+import com.gdgu.mvc.service.DatabaseService;
+import com.gdgu.mvc.util.Settings;
+
 import net.sourceforge.jeval.Evaluator;
 
 public class Controller {
@@ -11,7 +15,7 @@ public class Controller {
     private List<String> notes = new ArrayList<>();
 
     private static final String BACKWARD_KEYKEY = Settings.BACKWARD_KEY;
-    private final Database database = new Database();
+    private final DatabaseService database = new DatabaseService();
 
     private View view;
 
@@ -42,22 +46,12 @@ public class Controller {
                 case FORWARD_KEY + "eval": beginEvalateExpression(); break;
                 case FORWARD_KEY + "random": beginGenerateRandom(); break;
                 case FORWARD_KEY + "notebook": beginNotebook(); break;
+                case FORWARD_KEY + "task": beginTask(); break;
                 case FORWARD_KEY + "clock": 
                     view.attachClock(); 
                     view.clearDisplay(); break;
                 case BACKWARD_KEY + "clock": 
                     view.detachClock(); 
-                    view.clearDisplay(); break;
-                case FORWARD_KEY + "system": 
-                    view.attachSystemInfo(); 
-                    view.setSystemInfo(getSystemInfo()); 
-                    view.setSystemInfoState(true); break;
-                case BACKWARD_KEY + "system": view.detachSystemInfo(); break;
-                case FORWARD_KEY + "tictactoe":
-                    view.attachTictactoe();
-                    view.clearDisplay(); break;
-                case BACKWARD_KEY + "tictactoe":
-                    view.detachTictactoe();
                     view.clearDisplay(); break;
                 case FORWARD_KEY + "stopwatch":
                     view.attachStopwatch();
@@ -65,11 +59,11 @@ public class Controller {
                 case BACKWARD_KEY + "stopwatch":
                     view.detachstopwatch();
                     view.clearDisplay(); break;
-                case FORWARD_KEY + "battery":
-                    view.attachBattery();
+                case FORWARD_KEY + "tip": 
+                    view.attackTip(); 
                     view.clearDisplay(); break;
-                case BACKWARD_KEY + "battery":
-                    view.detachBattery();
+                case BACKWARD_KEY + "tip":
+                    view.detachTip();
                     view.clearDisplay(); break;
             }
         }
@@ -78,9 +72,15 @@ public class Controller {
                 case FORWARD_KEY + "eval": view.setResult(evaluateExpression(developRequest)); break;
                 case FORWARD_KEY + "random": view.setResult(generateRandom(developRequest)); break;
                 case FORWARD_KEY + "notebook": view.setNotes(getNotes(developRequest)); break;
+                case FORWARD_KEY + "task": handleTask(developRequest);; break;
             }
         }
     } 
+
+    public void handleTask(String developRequest) {
+        PanelFactory.getTaskPanel().addTask(developRequest);
+        view.clearDisplay();
+    }
 
     public void beginEvalateExpression() {
         view.inExecution(true);
@@ -103,6 +103,11 @@ public class Controller {
     public void beginNotebook() {
         this.beginEvalateExpression();
         view.attachNotebook();
+    }
+
+    public void beginTask() {
+        this.beginEvalateExpression();
+        view.attachTask();
     }
 
     public void ceaseNotebook() {
@@ -153,16 +158,6 @@ public class Controller {
             notes.add(note);
             return notes;
         }
-    }
-
-    public List<String> getSystemInfo() {
-        return List.of(
-            "foo",
-            "bar",
-            "baz",
-            "qux",
-            "quux"
-        );
     }
 
     public void database(String request) {

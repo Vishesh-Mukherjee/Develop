@@ -1,8 +1,10 @@
-package com.gdgu.mvc;
+package com.gdgu.mvc.panel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
+import com.gdgu.mvc.util.Settings;
 
 import java.awt.*;
 

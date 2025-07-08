@@ -2,6 +2,16 @@ package com.gdgu.mvc;
 
 import javax.swing.BoxLayout;
 import javax.swing.border.LineBorder;
+
+import com.gdgu.mvc.panel.ClockPanel;
+import com.gdgu.mvc.panel.NotebookPanel;
+import com.gdgu.mvc.panel.PanelFactory;
+import com.gdgu.mvc.panel.RequestPanel;
+import com.gdgu.mvc.panel.StopwatchPanel;
+import com.gdgu.mvc.panel.TipPanel;
+import com.gdgu.mvc.panel.TrackerPannel;
+import com.gdgu.mvc.util.Settings;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -12,14 +22,6 @@ public class View {
     private Controller controller;
 
     private JFrame developFrame = new JFrame();
-
-    private RequestPanel requestPanel = new RequestPanel();
-    private NotebookPanel notebookPanel = new NotebookPanel();
-    private ClockPanel clockPanel = new ClockPanel();
-    private SystemInfoPanel systemInfoPanel = new SystemInfoPanel();
-    private TicTacToePanel toePanel = new TicTacToePanel();
-    private StopwatchPanel watchPanel = new StopwatchPanel();
-    private BatteryPanel batteryPanel = new BatteryPanel();
 
     private int x, y, xMouse, yMouse;
     private static int heightCount;
@@ -32,9 +34,9 @@ public class View {
         developFrame.setAlwaysOnTop(true);
         developFrame.getContentPane().setBackground(Color.BLACK);
         developFrame.setVisible(true);
-        developFrame.setSize(getDevelopDimension(requestPanel, true));
+        developFrame.setSize(getDevelopDimension(PanelFactory.getRequestPanel(), true));
         developFrame.setLocationRelativeTo(null);
-        developFrame.add(requestPanel);
+        developFrame.add(PanelFactory.getRequestPanel());
         developFrame.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
@@ -50,7 +52,7 @@ public class View {
                 developFrame.setLocation(x-xMouse, y-yMouse);
             }
         });
-        requestPanel.getRequestField().addKeyListener(new KeyAdapter() {
+        PanelFactory.getRequestPanel().getRequestField().addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent evt) {
                 if (evt.getKeyCode() == KeyEvent.VK_ENTER) {                          
                     notifyController();
@@ -64,7 +66,7 @@ public class View {
     }
 
     private void notifyController() {
-        controller.updateControllerView(requestPanel.getRequestField().getText());
+        controller.updateControllerView(PanelFactory.getRequestPanel().getRequestField().getText());
     }
 
     private Dimension getDevelopDimension(JPanel panel, boolean bool) {
@@ -83,6 +85,7 @@ public class View {
     } 
 
     public void attachClock() {
+        ClockPanel clockPanel = PanelFactory.getClockPanel();
         if (!clockPanel.getAir()) {
             developFrame.setSize(getDevelopDimension(clockPanel, true));
             developFrame.add(clockPanel);
@@ -91,6 +94,7 @@ public class View {
     }
 
     public void detachClock() {
+        ClockPanel clockPanel = PanelFactory.getClockPanel();
         if (clockPanel.getAir()) {
             developFrame.remove(clockPanel);
             developFrame.setSize(getDevelopDimension(clockPanel, false));
@@ -98,67 +102,50 @@ public class View {
         }
     }
 
+    public void attackTip() {
+        TipPanel tipPanel = PanelFactory.getTipPanel();
+        if (!tipPanel.getAir()) {
+            developFrame.setSize(getDevelopDimension(tipPanel, true));
+            developFrame.add(tipPanel);
+            tipPanel.setAir(true);
+        }
+    }
+
+    public void detachTip() {
+        TipPanel tipPanel = PanelFactory.getTipPanel();
+        if (tipPanel.getAir()) {
+            developFrame.remove(tipPanel);
+            developFrame.setSize(getDevelopDimension(tipPanel, false));
+            tipPanel.setAir(false);
+        }
+    }
+
     public void attachNotebook() {                                                  
+        NotebookPanel notebookPanel = PanelFactory.getNotebookPanel();
         developFrame.setSize(getDevelopDimension(notebookPanel, true));
         developFrame.add(notebookPanel);
     }
 
     public void detachNoteBook() {
+        NotebookPanel notebookPanel = PanelFactory.getNotebookPanel();
         developFrame.remove(notebookPanel);
         developFrame.setSize(getDevelopDimension(notebookPanel, false));
     }
 
     public void setNotes(List<String> notes) {
+        NotebookPanel notebookPanel = PanelFactory.getNotebookPanel();
+        RequestPanel requestPanel = PanelFactory.getRequestPanel();
         if (notes != null) {
             requestPanel.getRequestField().setText("");
             notebookPanel.setNotes(notes);
         }
     }
 
-    public void setSystemInfoState(boolean bool) {
-        systemInfoPanel.setAir(bool);
-    }
-
-    public void attachSystemInfo() {
-        if (!systemInfoPanel.getAir()) {
-            developFrame.setSize(getDevelopDimension(systemInfoPanel, true));
-            developFrame.add(systemInfoPanel);
-            systemInfoPanel.setAir(true);
-        }
-    }
-
-    public void detachSystemInfo() {
-        if (systemInfoPanel.getAir()) {
-            requestPanel.getRequestField().setText("");
-            developFrame.remove(systemInfoPanel);
-            developFrame.setSize(getDevelopDimension(systemInfoPanel, false));
-            systemInfoPanel.setAir(false);
-        }
-    }
-
-    public void setSystemInfo(List<String> systemInfo) {
-        requestPanel.getRequestField().setText("");
-        systemInfoPanel.setSystemInfo(systemInfo);
-    }
-
-    public void attachTictactoe() {
-        if (!toePanel.getAir()) {
-            developFrame.setSize(getDevelopDimension(toePanel, true));
-            developFrame.add(toePanel);
-            toePanel.setAir(true);
-        }
-    }
-
-    public void detachTictactoe() {
-        if (toePanel.getAir()) {
-            requestPanel.getRequestField().setText("");
-            developFrame.remove(toePanel);
-            developFrame.setSize(getDevelopDimension(toePanel, false));
-            toePanel.setAir(false);
-        }
+    public void addTask(String task) {
     }
 
     public void attachStopwatch() {
+        StopwatchPanel watchPanel = PanelFactory.getStopWatchPanel();
         if (!watchPanel.getAir()) {
             developFrame.setSize(getDevelopDimension(watchPanel, true));
             developFrame.add(watchPanel);
@@ -167,6 +154,8 @@ public class View {
     }
 
     public void detachstopwatch() {
+        StopwatchPanel watchPanel = PanelFactory.getStopWatchPanel();
+        RequestPanel requestPanel = PanelFactory.getRequestPanel();
         if (watchPanel.getAir()) {
             requestPanel.getRequestField().setText("");
             developFrame.remove(watchPanel);
@@ -175,7 +164,8 @@ public class View {
         }
     }
 
-    public void attachBattery() {
+    public void attachTask() {
+        TrackerPannel batteryPanel = PanelFactory.getTaskPanel();
         if (!batteryPanel.getAir()) {
             developFrame.setSize(getDevelopDimension(batteryPanel, true));
             developFrame.add(batteryPanel);
@@ -183,16 +173,23 @@ public class View {
         }
     }
 
-    public void detachBattery() {
-        if (batteryPanel.getAir()) {
+    public void detachTask() {
+        TrackerPannel taskPanel = PanelFactory.getTaskPanel();
+        RequestPanel requestPanel = PanelFactory.getRequestPanel();
+        if (taskPanel.getAir()) {
             requestPanel.getRequestField().setText("");
-            developFrame.remove(batteryPanel);
-            developFrame.setSize(getDevelopDimension(batteryPanel, false));
-            batteryPanel.setAir(false);
+            developFrame.remove(taskPanel);
+            developFrame.setSize(getDevelopDimension(taskPanel, false));
+            taskPanel.setAir(false);
         }
     }
 
+    public void handleTask() {
+
+    }
+
     public void inExecution(boolean bool) {
+        RequestPanel requestPanel = PanelFactory.getRequestPanel();
         requestPanel.getRequestField().setText("");
         if (bool) {
             ((JComponent)developFrame.getContentPane()).setBorder(new LineBorder(Settings.BORDER_COLOR));
@@ -202,10 +199,12 @@ public class View {
     }
 
     public void clearDisplay() {
+        RequestPanel requestPanel = PanelFactory.getRequestPanel();
         requestPanel.getRequestField().setText("");
     }
 
     public void setResult(String result) {  
+        RequestPanel requestPanel = PanelFactory.getRequestPanel();
         if (result != null) {
             requestPanel.getRequestField().setText(result);
         }

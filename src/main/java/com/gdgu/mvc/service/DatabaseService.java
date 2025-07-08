@@ -1,8 +1,9 @@
-package com.gdgu.mvc;
+package com.gdgu.mvc.service;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.function.Consumer;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 import javax.persistence.SharedCacheMode;
 import javax.persistence.ValidationMode;
 import javax.persistence.spi.ClassTransformer;
@@ -21,11 +23,16 @@ import javax.sql.DataSource;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
-public class Database {
+import com.gdgu.mvc.entity.Data;
+import com.gdgu.mvc.entity.Task;
+import com.gdgu.mvc.entity.Tip;
+import com.gdgu.mvc.util.State;
 
-    private EntityManager entityManager;
+public class DatabaseService {
 
-    public Database() {
+    private final static EntityManager entityManager;
+
+    static {
         EntityManagerFactory entityManagerFactory = new HibernatePersistenceProvider().createContainerEntityManagerFactory(
             archiverPersistenceUnitInfo(),
             Map.of(
@@ -137,6 +144,46 @@ public class Database {
 
     public void addData(String data) {
         executeInsideTransaction(entityManager -> entityManager.persist(new Data(data)));
+    }
+
+    public void addTask(String description)  {
+        executeInsideTransaction(entityManager -> entityManager.persist(new Task(description, State.UNKNOWN)));
+    }
+
+    public Task getTask(int id) {
+        return entityManager.find(Task.class, id);
+    }
+
+    public void updateTask(int id, State state) {
+        Task task = getTask(id);
+        task.setState(state);
+        executeInsideTransaction(entityManager -> entityManager.merge(task));
+    }
+
+    public List<Tip> getTips() {
+        Query query = entityManager.createQuery("From Tip t");
+        List <Tip> tips = query.getResultList();
+        return tips;
+    }
+
+    public List<Task> getTasks(int pageSize, int pageNumber) {
+        Query queryTotal = entityManager.createQuery("Select count(t.id) From Task t");
+        long countResult = (long)queryTotal.getSingleResult();
+        if (countResult == 0) {
+            return new ArrayList<>();
+        }
+        int firstResult = pageNumber * pageSize;
+        // if (firstResult >= countResult) {
+        //     for (int i = 0; i < pageSize; i++) {
+        //         System.out.println("Inserting entry: " + i);
+        //         addTask(null);
+        //     }
+        // }
+        Query query = entityManager.createQuery("From Task t ORDER BY t.state");
+        query.setFirstResult(firstResult);
+        query.setMaxResults(pageSize);
+        List <Task> tasks = query.getResultList();
+        return tasks;
     }
 
     private void executeInsideTransaction(Consumer<EntityManager> action) {

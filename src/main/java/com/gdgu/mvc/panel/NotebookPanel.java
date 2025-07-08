@@ -1,4 +1,4 @@
-package com.gdgu.mvc;
+package com.gdgu.mvc.panel;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -6,6 +6,8 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
+import com.gdgu.mvc.util.Settings;
 
 import java.awt.*;
 import java.util.List;

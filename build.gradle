@@ -15,6 +15,8 @@ repositories {
 }
 
 dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.16'
+    annotationProcessor 'org.projectlombok:lombok:1.18.16'
     implementation 'net.sourceforge.jeval:jeval:0.9.4'
     implementation 'mysql:mysql-connector-java:8.0.27'
     implementation 'org.hibernate:hibernate-core:5.4.30.Final'
