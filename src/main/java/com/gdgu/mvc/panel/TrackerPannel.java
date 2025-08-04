@@ -1,82 +1,124 @@
 package com.gdgu.mvc.panel;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import com.gdgu.mvc.entity.Task;
 import com.gdgu.mvc.service.DatabaseService;
 import com.gdgu.mvc.util.Action;
-import com.gdgu.mvc.util.Settings;
+import com.gdgu.mvc.util.Configuration;
 import com.gdgu.mvc.util.State;
+import com.gdgu.mvc.util.Util;
 
 public class TrackerPannel extends JPanel {
     private boolean air;
 
     private DatabaseService database;
 
-    private int rowCount = 5, currentPageCount = 1;
+    private final List<String> ROW_HEADER = Arrays.asList("-", "PAY", "RULE", "ROUTE", "PROF", "REP", "WRAP", "FRON");
+    private final List<String> COLUMN_HEADER = Arrays.asList("-", "DEV", "QA", "PROD");
 
-    private List<JButton> taskButtons;
+    private int currentPageCount = 1;
+
+    private List<List<JLabel>> taskButtons;
+
+    private List<Task> tasks;
 
     public TrackerPannel() {
 
         database = new DatabaseService();
         taskButtons = new ArrayList<>();
-        
-        this.setLayout(new BorderLayout());
-        this.setSize(230, 150);
-        this.setBackground(Settings.BACKGROUND);
 
-        this.add(getTopPanel(), BorderLayout.NORTH);
-        this.add(getTaskPanel(), BorderLayout.CENTER);
-        this.setVisible(true);
+        intializeTaskMap();
+
+        setLayout(new BorderLayout());
+        setBorder(new EmptyBorder(3, 3, 3, 3));
+        setBackground(Configuration.BACKGROUND);
+        
+        setLayout(new BorderLayout());
+        setBackground(Configuration.BACKGROUND);
+
+        add(getTopPanel(), BorderLayout.NORTH);
+        add(getTaskPanel(), BorderLayout.CENTER);
+    }
+
+    private void intializeTaskMap() {
+        tasks = database.getTasks();
+        if (tasks.size() == 0) {
+            database.addTask("RETRY_POLICY");
+        }
+        tasks = database.getTasks();
     }
 
     private JPanel getTopPanel() {
-        final JButton pageCountButton = new JButton("" + currentPageCount);
+        final JLabel pageCountButton = Util.getLabel("" + currentPageCount);
 
-        JButton backwardButton = new JButton("<");
-        backwardButton.setBackground(Color.WHITE);
-        backwardButton.addActionListener(new ActionListener() {
+        pageCountButton.setLayout(new BorderLayout());
+        pageCountButton.setBorder(new EmptyBorder(3, 3, 3, 3));
+        pageCountButton.setBackground(Configuration.BACKGROUND);
+
+        JLabel backwardButton = Util.getLabel("<");
+        backwardButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void mouseClicked(MouseEvent evt) {
                 if (currentPageCount > 1) {
                     currentPageCount--;
                     pageCountButton.setText("" + currentPageCount);
                     removeAction();
                     updateTaskButton();
                 }
+            }         
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                backwardButton.setForeground(Configuration.BACKGROUND);
+                backwardButton.setBackground(Configuration.FOREGROUND);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                backwardButton.setForeground(Configuration.FOREGROUND);
+                backwardButton.setBackground(Configuration.BACKGROUND);
             }
         });
-
-        JButton forwardButton = new JButton(">");
-        forwardButton.setBackground(Color.WHITE);
-        forwardButton.addActionListener(new ActionListener() {
+        JLabel forwardButton = Util.getLabel(">");
+        forwardButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(database.getTasks(10, currentPageCount));
+            public void mousePressed(MouseEvent evt) {
+                System.out.println(database.getTasks());
                 currentPageCount++;
                 pageCountButton.setText("" + currentPageCount);    
                 removeAction();
                 updateTaskButton();
             }
-        });
 
-
-        pageCountButton.setHorizontalAlignment(JLabel.CENTER);
-        pageCountButton.setBackground(Color.WHITE);
-        pageCountButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void mouseEntered(MouseEvent e) {
+                forwardButton.setForeground(Configuration.BACKGROUND);
+                forwardButton.setBackground(Configuration.FOREGROUND);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                forwardButton.setForeground(Configuration.FOREGROUND);
+                forwardButton.setBackground(Configuration.BACKGROUND);
+            }
+            
+        }); 
+
+        pageCountButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
                 currentPageCount = 1;
                 pageCountButton.setText("" + currentPageCount);    
                 removeAction();
@@ -95,45 +137,60 @@ public class TrackerPannel extends JPanel {
 
     private JPanel getTaskPanel() {
         JPanel taskPanel = new JPanel();
-        taskPanel.setLayout(new GridLayout(rowCount, 1));
-        for (int i = 0; i < rowCount; i ++) {
-            JButton button = new JButton();
-            button.setText("-");
-            taskPanel.add(button);
-            taskButtons.add(button);
-            taskPanel.setEnabled(false);
+        taskPanel.setLayout(new GridLayout(ROW_HEADER.size(), COLUMN_HEADER.size()));
+        for (int i = 0; i < ROW_HEADER.size(); i ++) {
+            List<JLabel> buttons = new ArrayList<>();
+            for (int j = 0; j < COLUMN_HEADER.size(); j ++) {
+                JLabel button = Util.getLabel("");
+                button.setBackground(Configuration.BACKGROUND);
+                button.setBorder(new EmptyBorder(3, 3, 3, 3));
+                button.setForeground(Configuration.FOREGROUND);
+                button.setHorizontalAlignment(JLabel.CENTER);
+                button.setText("-");
+                buttons.add(button);
+                taskPanel.add(button);
+                taskPanel.setEnabled(false);
+            }
+            taskButtons.add(buttons);
+        }
+        for (int i = 0; i < COLUMN_HEADER.size(); i ++) {
+           taskButtons.get(0).get(i).setText(COLUMN_HEADER.get(i));
+           taskButtons.get(0).get(i).setEnabled(false);
+        }
+        for (int i = 0; i < ROW_HEADER.size(); i ++) {
+           taskButtons.get(i).get(0).setText(ROW_HEADER.get(i));
+           taskButtons.get(i).get(0).setEnabled(false);
         }
         updateTaskButton();;
         return taskPanel;
     }
 
     private void updateTaskButton() {
-        List<Task> tasks = database.getTasks(rowCount, currentPageCount-1);
-        for (int i = 0; i < tasks.size(); i ++) {
-            JButton button = taskButtons.get(i);
-            Task task = tasks.get(i);
-            button.setText(task.getDescription());
-            button.addActionListener(new Action(button, task));
-            System.out.println(task.getDescription());
-            if (task.getState() == State.UNKNOWN) {
-                System.out.println("SETTING TO UNKOWN");
-                button.setBackground(Settings.UNKNOWN);
-            } else if (task.getState() == State.ATTENDED) {
-                System.out.println("SETTING TO ATTENDED");
-                button.setBackground(Settings.ATTENDED);
-            } else {
-                System.out.println("SETTING TO NOT ATTENDED");
-                button.setBackground(Settings.NOT_ATTENDED);
+        Task task = tasks.get(0);
+        int count = 0;
+        String states = task.getStates();
+        for (int i = 1; i < ROW_HEADER.size(); i ++) {
+            for (int j = 1; j < COLUMN_HEADER.size(); j ++) { 
+                JLabel button = taskButtons.get(i).get(j);
+                if (count < states.length()) {
+                    char charRepresentation = states.charAt(0);
+                    button.addMouseListener(new Action(button, task, charRepresentation, count));
+                    button.setBackground(State.getColor(charRepresentation));    
+                    count ++;
+                }
+                button.setForeground(Configuration.BACKGROUND);
             }
         }
     }
 
     private void removeAction() {
-        for (int i = 0; i < taskButtons.size(); i ++) {
-            JButton button = taskButtons.get(i);
-            ActionListener[] actionListenerList = button.getActionListeners();
-            for (ActionListener actionListener: actionListenerList) {
-                button.removeActionListener(actionListener);
+        for (int i = 1; i < ROW_HEADER.size(); i ++) {
+            for (int j = 1; j < COLUMN_HEADER.size(); j ++) {
+                JLabel button = taskButtons.get(i).get(j);
+                MouseListener[] actionListenerList = button.getMouseListeners();
+                for (MouseListener actionListener: actionListenerList) {
+                    button.removeMouseListener(actionListener);
+                }
             }
         }
     }

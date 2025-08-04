@@ -7,7 +7,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import com.gdgu.mvc.util.Settings;
+import com.gdgu.mvc.util.Configuration;
 
 import java.awt.*;
 import java.util.List;
@@ -17,26 +17,26 @@ public class NotebookPanel extends JPanel{
     private JTextArea noteArea = new JTextArea();
 
     public NotebookPanel() {
-        this.setLayout(new BorderLayout());
-        this.setPreferredSize(new Dimension(230, 120));
-        this.setBorder(new EmptyBorder(3, 3, 3, 3));
-        this.setBackground(Settings.BACKGROUND);
+        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(Configuration.HORIZONTAL_WIDTH, 120));
+        setBorder(new EmptyBorder(3, 3, 3, 3));
+        setBackground(Configuration.BACKGROUND);
 
-        noteArea.setForeground(Settings.FOREGROUND);
-        noteArea.setFont(new Font(Settings.FONTSTYLE, Font.BOLD, 13));
+        noteArea.setForeground(Configuration.FOREGROUND);
+        noteArea.setFont(new Font(Configuration.FONTSTYLE, Font.BOLD, 13));
         noteArea.setLineWrap(true);
         noteArea.setEditable(false);
-        noteArea.setBorder(new LineBorder(Settings.BORDER_COLOR));
-        noteArea.setBackground(Settings.BACKGROUND);
+        noteArea.setBorder(new LineBorder(Configuration.BORDER_COLOR));
+        noteArea.setBackground(Configuration.BACKGROUND);
         
         JScrollPane notePane = new JScrollPane(noteArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        notePane.setBorder(new LineBorder(Settings.BORDER_COLOR, 1, true));
+        notePane.setBorder(new LineBorder(Configuration.BORDER_COLOR, 1, true));
 
-        this.add(notePane, BorderLayout.CENTER);
+        add(notePane, BorderLayout.CENTER);
     }
 
     public JTextArea getNoteArea() {
-        return this.noteArea;
+        return noteArea;
     }
 
     public void setNoteArea(JTextArea noteArea) {

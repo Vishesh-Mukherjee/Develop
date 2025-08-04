@@ -1,44 +1,70 @@
 package com.gdgu.mvc.util;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-import javax.swing.JButton;
+import javax.swing.JLabel;
 
 import com.gdgu.mvc.entity.Task;
 import com.gdgu.mvc.service.DatabaseService;
 
-public class Action implements ActionListener {
+public class Action implements MouseListener {
 
-    private JButton button;
-    private State state;
+    private JLabel button;
+    private char currentState;
+    private int index;
     private DatabaseService database;
     private int id;
+    private Task task;
 
-    public Action(JButton button, Task task) {
+    public Action(JLabel button, Task task, char currentState, int index) {
         this.id = task.getId();
+        this.task = task;
         this.database = new DatabaseService();
         this.button = button;
-        this.state = task.getState();
+        this.currentState = currentState;
+        this.index = index;
+    }
+
+    public State getNextState() {
+        State state = State.getState(currentState);
+        switch (state) {
+            case IRRELEVANT:
+                return State.NOT_STARTED;
+            case NOT_STARTED:
+                return State.IN_PROGRESS;
+            case IN_PROGRESS:
+                return State.COMPLETED;
+            case COMPLETED:
+                return State.IRRELEVANT;
+            default:
+                return State.IRRELEVANT;
+        }
 
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (state == State.UNKNOWN) {
-            button.setBackground(Settings.ATTENDED);
-            state = State.ATTENDED;
-            database.updateTask(id, State.ATTENDED);
-            return;
-        } 
-        if (state == State.ATTENDED) {   
-            button.setBackground(Settings.NOT_ATTENDED);
-            state = State.NOT_ATTENDED;
-            database.updateTask(id, State.NOT_ATTENDED);
-            return;
-        }
-        button.setBackground(Settings.UNKNOWN);
-        state = State.UNKNOWN;
-        database.updateTask(id, State.UNKNOWN);
+    public void mouseClicked(MouseEvent arg0) {
+        State nextState = getNextState();
+        currentState = nextState.getCharRepresentation(); 
+        button.setBackground(nextState.getAssociateColor());  
+        String updatedState = task.getStates().substring(0, index) + currentState + task.getStates().substring(index + 1);
+        database.updateTask(id, updatedState);
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent arg0) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent arg0) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent arg0) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent arg0) {
     }
 }

@@ -6,7 +6,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JLabel;
 
 import com.gdgu.mvc.panel.ClockPanel;
-import com.gdgu.mvc.util.Settings;
+import com.gdgu.mvc.util.Configuration;
 
 public class ClockListener implements MouseListener {
 
@@ -32,15 +32,15 @@ public class ClockListener implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         panel.updateTimeFormat("d MMMM yyyy '||' hh:mm:ss a");
-        label.setForeground(Settings.BACKGROUND);
-        panel.setBackground(Settings.FOREGROUND);
+        label.setForeground(Configuration.BACKGROUND);
+        panel.setBackground(Configuration.FOREGROUND);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         panel.updateTimeFormat("EEE  ||  MMM d  ||  HH:mm");
-        label.setForeground(Settings.FOREGROUND);
-        panel.setBackground(Settings.BACKGROUND);
+        label.setForeground(Configuration.FOREGROUND);
+        panel.setBackground(Configuration.BACKGROUND);
     }
     
 }

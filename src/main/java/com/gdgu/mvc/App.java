@@ -1,11 +1,10 @@
 package com.gdgu.mvc;
 
+import com.gdgu.mvc.view.View;
+
 public class App {
     
     public static void main( String[] args ) {
-        Controller controller = new Controller();
-        View view = new View(controller);
-
-        controller.setView(view);
+        new View();
     }
 }

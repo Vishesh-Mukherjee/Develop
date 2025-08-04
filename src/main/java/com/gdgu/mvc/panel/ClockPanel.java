@@ -15,7 +15,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import com.gdgu.mvc.listener.ClockListener;
-import com.gdgu.mvc.util.Settings;
+import com.gdgu.mvc.util.Configuration;
 
 public class ClockPanel extends JPanel{
 
@@ -39,14 +39,14 @@ public class ClockPanel extends JPanel{
     }
 
     public ClockPanel() {
-        this.setLayout(new BorderLayout());
-        this.setPreferredSize(new Dimension(230, 25));
-        this.setBorder(new EmptyBorder(3, 3, 3, 3));
-        this.setBackground(Settings.BACKGROUND);
+        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(Configuration.HORIZONTAL_WIDTH, 25));
+        setBorder(new EmptyBorder(3, 3, 3, 3));
+        setBackground(Configuration.BACKGROUND);
 
-        clockLabel.setForeground(Settings.FOREGROUND);
-        clockLabel.setBorder(new LineBorder(Settings.BORDER_COLOR)); 
-        clockLabel.setFont(new Font(Settings.FONTSTYLE, Font.BOLD, 12));
+        clockLabel.setForeground(Configuration.FOREGROUND);
+        clockLabel.setBorder(new LineBorder(Configuration.BORDER_COLOR)); 
+        clockLabel.setFont(new Font(Configuration.FONTSTYLE, Font.BOLD, 12));
         clockLabel.setHorizontalAlignment(JLabel.CENTER);
 
         clockLabel.addMouseListener(new ClockListener(this, clockLabel));
@@ -56,7 +56,7 @@ public class ClockPanel extends JPanel{
         });
         timer.start();
 
-        this.add(clockLabel);
+        add(clockLabel);
     }
 
     public void setAir(boolean air) {

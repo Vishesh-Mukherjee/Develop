@@ -3,7 +3,6 @@ package com.gdgu.mvc.service;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -147,16 +146,16 @@ public class DatabaseService {
     }
 
     public void addTask(String description)  {
-        executeInsideTransaction(entityManager -> entityManager.persist(new Task(description, State.UNKNOWN)));
+        executeInsideTransaction(entityManager -> entityManager.persist(new Task(description)));
     }
 
     public Task getTask(int id) {
         return entityManager.find(Task.class, id);
     }
 
-    public void updateTask(int id, State state) {
+    public void updateTask(int id, String state) {
         Task task = getTask(id);
-        task.setState(state);
+        task.setStates(state);
         executeInsideTransaction(entityManager -> entityManager.merge(task));
     }
 
@@ -166,22 +165,8 @@ public class DatabaseService {
         return tips;
     }
 
-    public List<Task> getTasks(int pageSize, int pageNumber) {
-        Query queryTotal = entityManager.createQuery("Select count(t.id) From Task t");
-        long countResult = (long)queryTotal.getSingleResult();
-        if (countResult == 0) {
-            return new ArrayList<>();
-        }
-        int firstResult = pageNumber * pageSize;
-        // if (firstResult >= countResult) {
-        //     for (int i = 0; i < pageSize; i++) {
-        //         System.out.println("Inserting entry: " + i);
-        //         addTask(null);
-        //     }
-        // }
-        Query query = entityManager.createQuery("From Task t ORDER BY t.state");
-        query.setFirstResult(firstResult);
-        query.setMaxResults(pageSize);
+    public List<Task> getTasks() {
+        Query query = entityManager.createQuery("From Task t");
         List <Task> tasks = query.getResultList();
         return tasks;
     }

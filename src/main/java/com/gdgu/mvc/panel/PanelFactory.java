@@ -2,19 +2,11 @@ package com.gdgu.mvc.panel;
 
 public class PanelFactory {
     
-    private static RequestPanel requestPanel;
     private static NotebookPanel notebookPanel;
     private static ClockPanel clockPanel;
     private static StopwatchPanel watchPanel;
     private static TrackerPannel trackerPanel;
     private static TipPanel tipPanel;
-
-    public static RequestPanel getRequestPanel() {
-        if (requestPanel == null) {
-            requestPanel = new RequestPanel();
-        }
-        return requestPanel;
-    }
 
     public static TipPanel getTipPanel() {
         if (tipPanel == null) {

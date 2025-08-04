@@ -16,7 +16,7 @@ import javax.swing.border.LineBorder;
 
 import com.gdgu.mvc.entity.Tip;
 import com.gdgu.mvc.service.DatabaseService;
-import com.gdgu.mvc.util.Settings;
+import com.gdgu.mvc.util.Configuration;
 
 public class TipPanel extends JPanel{
 
@@ -31,20 +31,20 @@ public class TipPanel extends JPanel{
     public TipPanel() {
         DatabaseService database = new DatabaseService();
         tips = database.getTips();
-        this.setLayout(new BorderLayout());
-        this.setPreferredSize(new Dimension(230, 100));
-        this.setBorder(new EmptyBorder(3, 3, 3, 3));
-        this.setBackground(Settings.BACKGROUND);
+        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(Configuration.HORIZONTAL_WIDTH, 100));
+        setBorder(new EmptyBorder(3, 3, 3, 3));
+        setBackground(Configuration.BACKGROUND);
 
-        textArea.setForeground(Settings.FOREGROUND);
-        textArea.setFont(new Font(Settings.FONTSTYLE, Font.BOLD, 13));
+        textArea.setForeground(Configuration.FOREGROUND);
+        textArea.setFont(new Font(Configuration.FONTSTYLE, Font.BOLD, 13));
         textArea.setLineWrap(true);
         textArea.setEditable(false);
-        textArea.setBorder(new LineBorder(Settings.BORDER_COLOR));
-        textArea.setBackground(Settings.BACKGROUND);
+        textArea.setBorder(new LineBorder(Configuration.BORDER_COLOR));
+        textArea.setBackground(Configuration.BACKGROUND);
 
         JScrollPane notePane = new JScrollPane(textArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        notePane.setBorder(new LineBorder(Settings.BORDER_COLOR, 1, true));
+        notePane.setBorder(new LineBorder(Configuration.BORDER_COLOR, 1, true));
 
         textArea.addMouseListener(new MouseListener() {
             @Override
@@ -67,11 +67,11 @@ public class TipPanel extends JPanel{
             public void mouseExited(MouseEvent e) {}
         });
 
-        this.add(notePane);
+        add(notePane);
     }
 
     public void setAir(boolean air) {
-        this.air= air;
+        this.air = air;
     }
 
     public boolean getAir() {

@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
-import com.gdgu.mvc.util.Settings;
+import com.gdgu.mvc.util.Configuration;
 
 public class StopwatchPanel extends JPanel {
     private boolean air = false;
@@ -31,10 +31,10 @@ public class StopwatchPanel extends JPanel {
     private Timer timer;
 
     public StopwatchPanel() {
-        this.setLayout(new BorderLayout());
-        this.setPreferredSize(new Dimension(230, 50));
-        this.setBorder(new EmptyBorder(3, 3, 3, 3));
-        this.setBackground(Settings.BACKGROUND);
+        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(Configuration.HORIZONTAL_WIDTH, 50));
+        setBorder(new EmptyBorder(3, 3, 3, 3));
+        setBackground(Configuration.BACKGROUND);
 
         timer = new Timer(1000,new ActionListener(){
             public void actionPerformed(ActionEvent ae) {
@@ -50,22 +50,22 @@ public class StopwatchPanel extends JPanel {
         });
 
         topPanel = new JPanel();
-        topPanel.setBackground(Settings.BACKGROUND);
+        topPanel.setBackground(Configuration.BACKGROUND);
 
         bottomPanel = new JPanel();
         bottomPanel.setLayout(new GridLayout(1, 2));
-        bottomPanel.setBackground(Settings.BACKGROUND);
+        bottomPanel.setBackground(Configuration.BACKGROUND);
 
         timeLabel = new JLabel();
-        timeLabel.setFont(new Font(Settings.FONTSTYLE, Font.BOLD, 15));
-        timeLabel.setForeground(Settings.FOREGROUND);
+        timeLabel.setFont(new Font(Configuration.FONTSTYLE, Font.BOLD, 15));
+        timeLabel.setForeground(Configuration.FOREGROUND);
 
         startLabel = new JLabel("Start");
         startLabel.setOpaque(true);
-        startLabel.setBackground(Settings.BACKGROUND);
+        startLabel.setBackground(Configuration.BACKGROUND);
         startLabel.setHorizontalAlignment(JLabel.CENTER);
-        startLabel.setFont(new Font(Settings.FONTSTYLE, Font.BOLD, 15));
-        startLabel.setForeground(Settings.FOREGROUND);
+        startLabel.setFont(new Font(Configuration.FONTSTYLE, Font.BOLD, 15));
+        startLabel.setForeground(Configuration.FOREGROUND);
         startLabel.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent evt) {
@@ -88,23 +88,23 @@ public class StopwatchPanel extends JPanel {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                startLabel.setForeground(Settings.BACKGROUND);
-                startLabel.setBackground(Settings.FOREGROUND);
+                startLabel.setForeground(Configuration.BACKGROUND);
+                startLabel.setBackground(Configuration.FOREGROUND);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                startLabel.setForeground(Settings.FOREGROUND);
-                startLabel.setBackground(Settings.BACKGROUND);
+                startLabel.setForeground(Configuration.FOREGROUND);
+                startLabel.setBackground(Configuration.BACKGROUND);
             }
         });
 
         resetLabel = new JLabel("Reset");
         resetLabel.setOpaque(true);
-        resetLabel.setBackground(Settings.BACKGROUND);
+        resetLabel.setBackground(Configuration.BACKGROUND);
         resetLabel.setHorizontalAlignment(JLabel.CENTER);
-        resetLabel.setFont(new Font(Settings.FONTSTYLE, Font.BOLD, 15));
-        resetLabel.setForeground(Settings.FOREGROUND);
+        resetLabel.setFont(new Font(Configuration.FONTSTYLE, Font.BOLD, 15));
+        resetLabel.setForeground(Configuration.FOREGROUND);
         resetLabel.addMouseListener(new MouseListener()
         {
             @Override
@@ -131,14 +131,14 @@ public class StopwatchPanel extends JPanel {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                resetLabel.setForeground(Settings.BACKGROUND);
-                resetLabel.setBackground(Settings.FOREGROUND);
+                resetLabel.setForeground(Configuration.BACKGROUND);
+                resetLabel.setBackground(Configuration.FOREGROUND);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                resetLabel.setForeground(Settings.FOREGROUND);
-                resetLabel.setBackground(Settings.BACKGROUND);
+                resetLabel.setForeground(Configuration.FOREGROUND);
+                resetLabel.setBackground(Configuration.BACKGROUND);
             }
         });
 
@@ -146,8 +146,8 @@ public class StopwatchPanel extends JPanel {
         bottomPanel.add(startLabel);
         bottomPanel.add(resetLabel);
 
-        this.add(topPanel, BorderLayout.NORTH);
-        this.add(bottomPanel, BorderLayout.CENTER);
+        add(topPanel, BorderLayout.NORTH);
+        add(bottomPanel, BorderLayout.CENTER);
 
         seconds_string = String.format("%02d", seconds);
         minutes_string = String.format("%02d", minutes);
