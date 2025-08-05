@@ -30,7 +30,4 @@ public class RequestPanel extends JPanel{
         return requestField;
     }
 
-    public void setRequestField(JTextField requestField) {
-        this.requestField = requestField;
-    }
 }

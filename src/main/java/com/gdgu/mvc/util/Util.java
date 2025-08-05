@@ -15,8 +15,12 @@ public class Util {
         label.setBorder(new EmptyBorder(3, 3, 3, 3));
         label.setForeground(Configuration.FOREGROUND);
         label.setHorizontalAlignment(JLabel.CENTER);
-        label.setText("-");
+        label.setText(isEmpty(text) ? "-" : text);
         return label;
+    }
+
+    public static boolean isEmpty(String value) {
+        return value == null || value.length() == 0;
     }
 
 }

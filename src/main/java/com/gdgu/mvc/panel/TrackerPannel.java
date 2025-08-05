@@ -28,7 +28,7 @@ public class TrackerPannel extends JPanel {
     private final List<String> ROW_HEADER = Arrays.asList("-", "PAY", "RULE", "ROUTE", "PROF", "REP", "WRAP", "FRON");
     private final List<String> COLUMN_HEADER = Arrays.asList("-", "DEV", "QA", "PROD");
 
-    private int currentPageCount = 1;
+    private int currentPageCount = 0;
 
     private List<List<JLabel>> taskButtons;
 
@@ -40,6 +40,7 @@ public class TrackerPannel extends JPanel {
         taskButtons = new ArrayList<>();
 
         intializeTaskMap();
+        tasks = database.getTasks();
 
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(3, 3, 3, 3));
@@ -54,10 +55,6 @@ public class TrackerPannel extends JPanel {
 
     private void intializeTaskMap() {
         tasks = database.getTasks();
-        if (tasks.size() == 0) {
-            database.addTask("RETRY_POLICY");
-        }
-        tasks = database.getTasks();
     }
 
     private JPanel getTopPanel() {
@@ -71,12 +68,15 @@ public class TrackerPannel extends JPanel {
         backwardButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
-                if (currentPageCount > 1) {
+                if (currentPageCount > 0) {
                     currentPageCount--;
-                    pageCountButton.setText("" + currentPageCount);
-                    removeAction();
-                    updateTaskButton();
+                } else {
+                    currentPageCount = tasks.size()-1;
                 }
+                pageCountButton.setText("" + currentPageCount);
+                removeAction();
+                intializeTaskMap();
+                updateTaskButton();
             }         
 
             @Override
@@ -97,8 +97,12 @@ public class TrackerPannel extends JPanel {
             public void mousePressed(MouseEvent evt) {
                 System.out.println(database.getTasks());
                 currentPageCount++;
+                if (currentPageCount >= tasks.size()) {
+                    currentPageCount = 0;
+                }
                 pageCountButton.setText("" + currentPageCount);    
                 removeAction();
+                intializeTaskMap();
                 updateTaskButton();
             }
 
@@ -119,7 +123,7 @@ public class TrackerPannel extends JPanel {
         pageCountButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                currentPageCount = 1;
+                currentPageCount = 0;
                 pageCountButton.setText("" + currentPageCount);    
                 removeAction();
                 updateTaskButton();
@@ -166,17 +170,18 @@ public class TrackerPannel extends JPanel {
     }
 
     private void updateTaskButton() {
-        Task task = tasks.get(0);
-        int count = 0;
+        Task task = tasks.get(currentPageCount);
+        PanelFactory.getRequestPanel().getRequestField().setText(task.getDescription());
+        int index = 0;
         String states = task.getStates();
         for (int i = 1; i < ROW_HEADER.size(); i ++) {
             for (int j = 1; j < COLUMN_HEADER.size(); j ++) { 
                 JLabel button = taskButtons.get(i).get(j);
-                if (count < states.length()) {
-                    char charRepresentation = states.charAt(0);
-                    button.addMouseListener(new Action(button, task, charRepresentation, count));
+                if (index < states.length()) {
+                    char charRepresentation = states.charAt(index);
+                    button.addMouseListener(new Action(button, task, charRepresentation, index));
                     button.setBackground(State.getColor(charRepresentation));    
-                    count ++;
+                    index ++;
                 }
                 button.setForeground(Configuration.BACKGROUND);
             }

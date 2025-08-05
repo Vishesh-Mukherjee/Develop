@@ -20,7 +20,6 @@ import javax.swing.border.LineBorder;
 import com.gdgu.mvc.panel.ClockPanel;
 import com.gdgu.mvc.panel.NotebookPanel;
 import com.gdgu.mvc.panel.PanelFactory;
-import com.gdgu.mvc.panel.RequestPanel;
 import com.gdgu.mvc.panel.StopwatchPanel;
 import com.gdgu.mvc.panel.TipPanel;
 import com.gdgu.mvc.panel.TrackerPannel;
@@ -33,8 +32,6 @@ public class View extends JFrame {
 
     private int x, y, xMouse, yMouse;
     private static int heightCount;
-
-    private RequestPanel REQUEST_PANEL = new RequestPanel();
 
     private List<String> notes = new ArrayList<>();
 
@@ -51,12 +48,12 @@ public class View extends JFrame {
         setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         setUndecorated(true);
         setOpacity(0.85f);
-        // setAlwaysOnTop(true);
+        setAlwaysOnTop(true);
         getContentPane().setBackground(Color.BLACK);
         setVisible(true);
-        setSize(getDevelopDimension(REQUEST_PANEL, true));
+        setSize(getDevelopDimension(PanelFactory.getRequestPanel(), true));
         setLocationRelativeTo(null);
-        add(REQUEST_PANEL);
+        add(PanelFactory.getRequestPanel());
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
@@ -72,7 +69,7 @@ public class View extends JFrame {
                 setLocation(x-xMouse, y-yMouse);
             }
         });
-        REQUEST_PANEL.getRequestField().addKeyListener(new KeyAdapter() {
+        PanelFactory.getRequestPanel().getRequestField().addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent evt) {
                 if (evt.getKeyCode() == KeyEvent.VK_ENTER) {                          
                     notifyController();
@@ -82,7 +79,7 @@ public class View extends JFrame {
     }
 
     private void notifyController() {
-        updateControllerView(REQUEST_PANEL.getRequestField().getText());
+        updateControllerView(PanelFactory.getRequestPanel().getRequestField().getText());
     }
 
     private Dimension getDevelopDimension(JPanel panel, boolean bool) {
@@ -115,6 +112,15 @@ public class View extends JFrame {
             remove(clockPanel);
             setSize(getDevelopDimension(clockPanel, false));
             clockPanel.setAir(false);
+        }
+    }
+
+    public void detachTracker() {
+        TrackerPannel trackerPanel = PanelFactory.getTrackerPanel();
+        if (trackerPanel.getAir()) {
+            remove(trackerPanel);
+            setSize(getDevelopDimension(trackerPanel, false));
+            trackerPanel.setAir(false);
         }
     }
 
@@ -151,7 +157,7 @@ public class View extends JFrame {
     public void setNotes(List<String> notes) {
         NotebookPanel notebookPanel = PanelFactory.getNotebookPanel();
         if (notes != null) {
-            REQUEST_PANEL.getRequestField().setText("");
+            PanelFactory.getRequestPanel().getRequestField().setText("");
             notebookPanel.setNotes(notes);
         }
     }
@@ -171,38 +177,24 @@ public class View extends JFrame {
     public void detachstopwatch() {
         StopwatchPanel watchPanel = PanelFactory.getStopWatchPanel();
         if (watchPanel.getAir()) {
-            REQUEST_PANEL.getRequestField().setText("");
+            PanelFactory.getRequestPanel().getRequestField().setText("");
             remove(watchPanel);
             setSize(getDevelopDimension(watchPanel, false));
             watchPanel.setAir(false);
         }
     }
 
-    public void attachTask() {
-        TrackerPannel batteryPanel = PanelFactory.getTaskPanel();
-        if (!batteryPanel.getAir()) {
-            setSize(getDevelopDimension(batteryPanel, true));
-            add(batteryPanel);
-            batteryPanel.setAir(true);
+    public void attachTracker() {
+        TrackerPannel trackerPanel = PanelFactory.getTrackerPanel();
+        if (!trackerPanel.getAir()) {
+            setSize(getDevelopDimension(trackerPanel, true));
+            add(trackerPanel);
+            trackerPanel.setAir(true);
         }
-    }
-
-    public void detachTask() {
-        TrackerPannel taskPanel = PanelFactory.getTaskPanel();
-        if (taskPanel.getAir()) {
-            REQUEST_PANEL.getRequestField().setText("");
-            this.remove(taskPanel);
-            this.setSize(getDevelopDimension(taskPanel, false));
-            taskPanel.setAir(false);
-        }
-    }
-
-    public void handleTask() {
-
     }
 
     public void inExecution(boolean bool) {
-        REQUEST_PANEL.getRequestField().setText("");
+        PanelFactory.getRequestPanel().getRequestField().setText("");
         if (bool) {
             ((JComponent)this.getContentPane()).setBorder(new LineBorder(Configuration.BORDER_COLOR));
         } else {
@@ -211,12 +203,12 @@ public class View extends JFrame {
     }
 
     public void clearDisplay() {
-        REQUEST_PANEL.getRequestField().setText("");
+        PanelFactory.getRequestPanel().getRequestField().setText("");
     }
 
     public void setResult(String result) {  
         if (result != null) {
-            REQUEST_PANEL.getRequestField().setText(result);
+            PanelFactory.getRequestPanel().getRequestField().setText(result);
         }
     }
 
@@ -233,12 +225,17 @@ public class View extends JFrame {
                 case FORWARD_KEY + "eval": beginEvalateExpression(); break;
                 case FORWARD_KEY + "random": beginGenerateRandom(); break;
                 case FORWARD_KEY + "notebook": beginNotebook(); break;
-                case FORWARD_KEY + "task": beginTask(); break;
                 case FORWARD_KEY + "clock": 
                     attachClock(); 
                     clearDisplay(); break;
                 case BACKWARD_KEY + "clock": 
                     detachClock(); 
+                    clearDisplay(); break;
+                case FORWARD_KEY + "tracker": 
+                    attachTracker();
+                    clearDisplay(); break;
+                case BACKWARD_KEY + "tracker": 
+                    detachTracker(); 
                     clearDisplay(); break;
                 case FORWARD_KEY + "stopwatch":
                     attachStopwatch();
@@ -259,15 +256,9 @@ public class View extends JFrame {
                 case FORWARD_KEY + "eval": setResult(evaluateExpression(developRequest)); break;
                 case FORWARD_KEY + "random": setResult(generateRandom(developRequest)); break;
                 case FORWARD_KEY + "notebook": setNotes(getNotes(developRequest)); break;
-                case FORWARD_KEY + "task": handleTask(developRequest);; break;
             }
         }
     } 
-
-    public void handleTask(String developRequest) {
-        PanelFactory.getTaskPanel().addTask(developRequest);
-        clearDisplay();
-    }
 
     public void beginEvalateExpression() {
         inExecution(true);
@@ -290,11 +281,6 @@ public class View extends JFrame {
     public void beginNotebook() {
         this.beginEvalateExpression();
         attachNotebook();
-    }
-
-    public void beginTask() {
-        this.beginEvalateExpression();
-        attachTask();
     }
 
     public void ceaseNotebook() {

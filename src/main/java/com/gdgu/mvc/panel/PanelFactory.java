@@ -7,6 +7,14 @@ public class PanelFactory {
     private static StopwatchPanel watchPanel;
     private static TrackerPannel trackerPanel;
     private static TipPanel tipPanel;
+    private static RequestPanel requestPanel;
+
+    public static RequestPanel getRequestPanel() {
+        if (requestPanel == null) {
+            requestPanel = new RequestPanel();
+        }
+        return requestPanel;
+    }
 
     public static TipPanel getTipPanel() {
         if (tipPanel == null) {
@@ -36,7 +44,7 @@ public class PanelFactory {
         return watchPanel;
     }
 
-    public static TrackerPannel getTaskPanel() {
+    public static TrackerPannel getTrackerPanel() {
         if (trackerPanel == null) {
             trackerPanel = new TrackerPannel(); 
         }

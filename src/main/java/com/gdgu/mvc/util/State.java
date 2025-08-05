@@ -9,8 +9,8 @@ import lombok.Getter;
 @Getter
 public enum State {
 
-    COMPLETED('3', new Color(128, 245, 110)), IN_PROGRESS('2', new Color(252, 209, 106)),
-    NOT_STARTED('1', new Color(255, 255, 255)), IRRELEVANT('0', new Color(43, 43, 43));
+    COMPLETED('3', new Color(99, 255, 109)), IN_PROGRESS('2', new Color(83, 86, 252)),
+    NOT_STARTED('1', new Color(252, 83, 83)), IRRELEVANT('0', new Color(25, 25, 25));
 
     private char charRepresentation;
     private Color associateColor;
@@ -30,4 +30,5 @@ public enum State {
         return states.stream().filter(state -> state.getCharRepresentation() == charRepresentation).findAny()
                 .orElse(State.IRRELEVANT);
     }
+
 }
