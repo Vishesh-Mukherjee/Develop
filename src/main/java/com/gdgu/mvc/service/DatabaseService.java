@@ -22,7 +22,6 @@ import javax.sql.DataSource;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
-import com.gdgu.mvc.entity.Data;
 import com.gdgu.mvc.entity.Task;
 import com.gdgu.mvc.entity.Tip;
 import com.gdgu.mvc.util.State;
@@ -140,10 +139,6 @@ public class DatabaseService {
         }
     };
 }
-
-    public void addData(String data) {
-        executeInsideTransaction(entityManager -> entityManager.persist(new Data(data)));
-    }
 
     public void addTask(String description)  {
         executeInsideTransaction(entityManager -> entityManager.persist(new Task(description)));

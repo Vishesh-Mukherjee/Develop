@@ -7,7 +7,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
@@ -18,9 +17,7 @@ import com.gdgu.mvc.entity.Tip;
 import com.gdgu.mvc.service.DatabaseService;
 import com.gdgu.mvc.util.Configuration;
 
-public class TipPanel extends JPanel{
-
-    private boolean air = false;
+public class TipPanel extends AbstractPanel {
 
     private JTextArea textArea = new JTextArea();
 
@@ -70,10 +67,12 @@ public class TipPanel extends JPanel{
         add(notePane);
     }
 
+    @Override
     public void setAir(boolean air) {
         this.air = air;
     }
 
+    @Override
     public boolean getAir() {
         return air;
     }

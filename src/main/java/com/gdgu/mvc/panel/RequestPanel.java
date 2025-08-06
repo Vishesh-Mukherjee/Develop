@@ -26,6 +26,10 @@ public class RequestPanel extends JPanel{
         add(requestField, BorderLayout.CENTER);
     }
 
+    public void setText(String text) {
+        requestField.setText(text);
+    }
+
     public JTextField getRequestField() {
         return requestField;
     }

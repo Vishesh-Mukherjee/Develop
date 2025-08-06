@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import com.gdgu.mvc.entity.Task;
@@ -20,8 +21,7 @@ import com.gdgu.mvc.util.Configuration;
 import com.gdgu.mvc.util.State;
 import com.gdgu.mvc.util.Util;
 
-public class TrackerPannel extends JPanel {
-    private boolean air;
+public class TrackerPannel extends AbstractPanel {
 
     private DatabaseService database;
 
@@ -34,8 +34,10 @@ public class TrackerPannel extends JPanel {
 
     private List<Task> tasks;
 
-    public TrackerPannel() {
+    private JTextField requestField;
 
+    public TrackerPannel(JTextField requestField) {
+        this.requestField = requestField;
         database = new DatabaseService();
         taskButtons = new ArrayList<>();
 
@@ -171,7 +173,7 @@ public class TrackerPannel extends JPanel {
 
     private void updateTaskButton() {
         Task task = tasks.get(currentPageCount);
-        PanelFactory.getRequestPanel().getRequestField().setText(task.getDescription());
+        requestField.setText(task.getDescription());
         int index = 0;
         String states = task.getStates();
         for (int i = 1; i < ROW_HEADER.size(); i ++) {
@@ -204,10 +206,12 @@ public class TrackerPannel extends JPanel {
         database.addTask(description);
     }
 
+    @Override
     public void setAir(boolean air) {
         this.air= air;
     }
 
+    @Override
     public boolean getAir() {
         return air;
     }

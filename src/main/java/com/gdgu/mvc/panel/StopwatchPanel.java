@@ -16,8 +16,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.gdgu.mvc.util.Configuration;
 
-public class StopwatchPanel extends JPanel {
-    private boolean air = false;
+public class StopwatchPanel extends AbstractPanel {
     private boolean started = false;
 
     private JPanel topPanel, bottomPanel;
@@ -155,10 +154,12 @@ public class StopwatchPanel extends JPanel {
         timeLabel.setText(hours_string+" : "+minutes_string+" : "+seconds_string);
     }
 
+    @Override
     public void setAir(boolean air) {
         this.air= air;
     }
 
+    @Override
     public boolean getAir() {
         return air;
     }

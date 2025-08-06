@@ -9,7 +9,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -17,11 +16,9 @@ import javax.swing.border.LineBorder;
 import com.gdgu.mvc.listener.ClockListener;
 import com.gdgu.mvc.util.Configuration;
 
-public class ClockPanel extends JPanel{
+public class ClockPanel extends AbstractPanel {
 
     private JLabel clockLabel = new JLabel();
-
-    private boolean air = false;
 
     private String timeFormat = "EEE  ||  MMM d  ||  HH:mm";
 
@@ -59,10 +56,12 @@ public class ClockPanel extends JPanel{
         add(clockLabel);
     }
 
+    @Override
     public void setAir(boolean air) {
         this.air= air;
     }
 
+    @Override
     public boolean getAir() {
         return air;
     }
