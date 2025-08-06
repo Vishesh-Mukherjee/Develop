@@ -2,6 +2,7 @@ package com.gdgu.mvc.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Panel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -24,6 +25,7 @@ import com.gdgu.mvc.panel.RequestPanel;
 import com.gdgu.mvc.panel.StopwatchPanel;
 import com.gdgu.mvc.panel.TipPanel;
 import com.gdgu.mvc.panel.TrackerPannel;
+import com.gdgu.mvc.service.DatabaseService;
 import com.gdgu.mvc.util.Configuration;
 import com.gdgu.mvc.util.Constants;
 
@@ -43,8 +45,10 @@ public class View extends JFrame {
     private RequestPanel requestPanel = new RequestPanel();
 
     private Map<String, AbstractPanel> panels;
+    private DatabaseService database;
 
     public View() {
+        database = new DatabaseService();
         notebookPanel = new NotebookPanel();
         requestPanel = new RequestPanel();
         panels = Map.of(
@@ -121,22 +125,23 @@ public class View extends JFrame {
     }
 
     public <T extends AbstractPanel> void attachPanel(T panel) {
+        requestPanel.setText("");
         if (!panel.getAir()) {
             setSize(getDevelopDimension(panel.getPreferredSize().getHeight(), true));
             add(panel);
             panel.setAir(true);
+            panel.attackAndExecute();
         }
-        requestPanel.setText("");
     }
 
     public <T extends AbstractPanel> void detachPanel(T panel) {
+        requestPanel.setText("");
         if (panel.getAir()) {
             requestPanel.getRequestField().setText("");
             remove(panel);
             setSize(getDevelopDimension(panel.getPreferredSize().getHeight(), false));
             panel.setAir(false);
         }
-        requestPanel.setText("");
     }
 
     public void inExecution(boolean bool) {
@@ -149,17 +154,25 @@ public class View extends JFrame {
     }
 
     public void handleHyperMode() {
-        if ((Configuration.FORWARD_KEY + "eval").equals(exDevelopRequest)) {
-            requestPanel.setText(evaluateExpression(developRequest));
-            return;
-        }
-        if ((Configuration.FORWARD_KEY + "random").equals(exDevelopRequest)) {
-            requestPanel.setText(generateRandom(developRequest));
-            return;
-        }
-        if ((Configuration.FORWARD_KEY + "notebook").equals(exDevelopRequest)) {
-            setNotes(getNotes(developRequest));
-            return;
+        switch (exDevelopRequest) {
+            case Constants.EVAL_TASK:
+                requestPanel.setText(evaluateExpression(developRequest));
+                break;
+            case Constants.RANDOM_TASK:
+                requestPanel.setText(generateRandom(developRequest));
+                break;
+            case Constants.NOTEBOOK_TASK:
+                setNotes(getNotes(developRequest));
+                break;
+            case Constants.PROJECT_TASK:
+                if (Configuration.BACKWARD_KEY.equals(developRequest)) {
+                    exDevelopRequest = "";
+                    inExecution(false);
+                    return;
+                }
+                database.addTask(developRequest);
+                requestPanel.getRequestField().setText("");
+                break;
         }
     }
 
@@ -171,6 +184,11 @@ public class View extends JFrame {
         switch(request) {
             case Constants.EVAL_TASK:
             case Constants.RANDOM_TASK:
+            case Constants.PROJECT_TASK:
+                AbstractPanel trackPanel = panels.get("tracker");
+                if (trackPanel.getAir()) {
+                    detachPanel(trackPanel);
+                }
                 inExecution(true);
                 exDevelopRequest = request;
                 break;

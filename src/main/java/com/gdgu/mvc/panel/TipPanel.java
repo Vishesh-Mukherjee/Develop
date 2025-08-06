@@ -81,4 +81,9 @@ public class TipPanel extends AbstractPanel {
 
     }
 
+    @Override
+    public void attackAndExecute() {
+        // Nothing to execute
+    }
+
 }

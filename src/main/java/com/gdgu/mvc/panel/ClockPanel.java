@@ -66,6 +66,11 @@ public class ClockPanel extends AbstractPanel {
         return air;
     }
 
+    @Override
+    public void attackAndExecute() {
+        // Nothing to execute
+    }
+
     public String getTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(timeFormat);
         if (counter == 0) {

@@ -163,4 +163,9 @@ public class StopwatchPanel extends AbstractPanel {
     public boolean getAir() {
         return air;
     }
+
+    @Override
+    public void attackAndExecute() {
+        // Nothing to execute
+    }
 }

@@ -45,8 +45,6 @@ public class Action implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent arg0) {
-        System.out.println("Updating task: " + task.getDescription());
-        System.out.println("Updating at index: " + index);
         State nextState = getNextState();
         currentState = nextState.getCharRepresentation(); 
         button.setBackground(nextState.getAssociateColor());  

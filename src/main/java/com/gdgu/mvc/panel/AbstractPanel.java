@@ -7,4 +7,5 @@ public abstract class AbstractPanel extends JPanel {
 
     public abstract void setAir(boolean air);
     public abstract boolean getAir();
+    public abstract void attackAndExecute();
 }

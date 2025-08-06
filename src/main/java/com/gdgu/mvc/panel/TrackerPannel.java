@@ -41,7 +41,6 @@ public class TrackerPannel extends AbstractPanel {
         database = new DatabaseService();
         taskButtons = new ArrayList<>();
 
-        intializeTaskMap();
         tasks = database.getTasks();
 
         setLayout(new BorderLayout());
@@ -55,7 +54,7 @@ public class TrackerPannel extends AbstractPanel {
         add(getTaskPanel(), BorderLayout.CENTER);
     }
 
-    private void intializeTaskMap() {
+    public void intializeTaskMap() {
         tasks = database.getTasks();
     }
 
@@ -97,7 +96,6 @@ public class TrackerPannel extends AbstractPanel {
         forwardButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                System.out.println(database.getTasks());
                 currentPageCount++;
                 if (currentPageCount >= tasks.size()) {
                     currentPageCount = 0;
@@ -167,11 +165,13 @@ public class TrackerPannel extends AbstractPanel {
            taskButtons.get(i).get(0).setText(ROW_HEADER.get(i));
            taskButtons.get(i).get(0).setEnabled(false);
         }
-        updateTaskButton();;
         return taskPanel;
     }
 
     private void updateTaskButton() {
+        if (tasks.size() <= 0) {
+            return;
+        }
         Task task = tasks.get(currentPageCount);
         requestField.setText(task.getDescription());
         int index = 0;
@@ -202,10 +202,6 @@ public class TrackerPannel extends AbstractPanel {
         }
     }
 
-    public void addTask(String description) {
-        database.addTask(description);
-    }
-
     @Override
     public void setAir(boolean air) {
         this.air= air;
@@ -214,5 +210,12 @@ public class TrackerPannel extends AbstractPanel {
     @Override
     public boolean getAir() {
         return air;
+    }
+
+    @Override
+    public void attackAndExecute() {
+        intializeTaskMap();
+        updateTaskButton();
+        currentPageCount = 0;
     }
 }
